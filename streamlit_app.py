@@ -52,11 +52,13 @@ if uploaded_file is not None:
         shap_values = explainer(X)
 
         st.subheader("📊 Viktigaste drivare (SHAP Feature Importance)")
-        fig, ax = plt.subplots()
+        # shap.plots.bar creates its own figure so we grab it via plt.gcf()
         shap.plots.bar(shap_values, max_display=10, show=False)
-        st.pyplot(fig)
+        st.pyplot(plt.gcf())
+        plt.clf()
 
         with st.expander("📈 Visa detaljerad SHAP-summary plot"):
-            fig2, ax2 = plt.subplots()
+            # summary_plot also creates a new figure internally
             shap.summary_plot(shap_values, X, plot_type="dot", show=False)
-            st.pyplot(fig2)
+            st.pyplot(plt.gcf())
+            plt.clf()
